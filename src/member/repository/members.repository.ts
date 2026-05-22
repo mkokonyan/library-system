@@ -23,4 +23,3 @@ export function insertMember(name: string, email: string, phone: string, address
 
   return stmt.run(name, email, phone, address);
 }
-

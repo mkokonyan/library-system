@@ -2,11 +2,11 @@ import { db } from '../../db';
 
 export function initBookTable(): void {
 
-    db.run(`CREATE TABLE IF NOT EXISTS BOOKS(
-            bookid INTEGER PRIMARY KEY, 
-            title varchar(50),
-            subject varchar(50),
-            author varchar(50),
-            language varchar(50)
+    db.run(`CREATE TABLE IF NOT EXISTS books(
+            bookid INTEGER PRIMARY KEY AUTOINCREMENT, 
+            title varchar(50) NOT NULL,
+            subject varchar(50) NOT NULL,
+            author varchar(50) NOT NULL,
+            language varchar(50) NOT NULL
         )`);
 }

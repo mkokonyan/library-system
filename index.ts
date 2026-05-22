@@ -1,7 +1,7 @@
-import { Elysia } from "elysia";
+import { Elysia, t } from "elysia";
 import { initBookTable } from './src/book/repository/init';
-import { createBook, getAllBooks } from "./src/book/service/service";
-import { bookValidation } from "./src/book/models/validation";
+import { createBook, findBookById, getAllBooks } from "./src/book/service/service";
+import { bookIdParamValidation, bookValidation } from "./src/book/models/validation";
 import type { Book } from "./src/book/models/models";
 import "./src/member/repository/init";
 
@@ -19,9 +19,23 @@ app.group('/books', (app) =>
     })
         .post('', ({ body, set }) => {
             const newBook = body as Book;
-            createBook(newBook);
+            const successful = createBook(newBook);
+            if (!successful) {
+                set.status = 400;
+                return { message: 'Book creation failed' };
+            }
+            set.status = 201;
+            return { message: 'Book created successfully!' };
         }, bookValidation)
-        .get('/:bookid', () => { })
+        .get('/:bookid', ({ set, params: { bookid } }) => {
+            const book = findBookById(bookid);
+            if (!book) {
+                set.status = 404;
+                return { message: 'Book not found' };
+            }
+            set.status = 201;
+            return book;
+        }, bookIdParamValidation)
 );
 
 

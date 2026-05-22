@@ -1,11 +1,20 @@
 import type { Book } from "../models/models";
-import { getAll } from "../repository/repository";
+import { getAll, create, findById } from "../repository/repository";
 
 export function getAllBooks(): Book[] {
     return getAll();
 }
 
-export function createBook(book: Book): Book {
-    // return create();
+export function createBook(book: Book): boolean {
+    try {
+        create(book);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+export function findBookById(bookid: number): Book | null {
+    return findById(bookid);
 }
 
