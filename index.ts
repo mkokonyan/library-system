@@ -1,11 +1,11 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import { initBookTable } from './src/book/repository/init';
 import { createBook, findBookById, getAllBooks } from "./src/book/service/service";
 import { bookIdParamValidation, bookValidation } from "./src/book/models/validation";
 import type { Book } from "./src/book/models/models";
-import { createMember, getAllMembers, getMemberById } from "./src/member/service/service";
+import { createMember, findMemberById, getAllMembers } from "./src/member/service/service";
 import type { Member } from "./src/member/models/models";
-import { memberValidation } from "./src/member/models/validation";
+import { memberIdParamValidation, memberValidation } from "./src/member/models/validation";
 import { initMemberTable } from "./src/member/repository/init";
 
 initTables();
@@ -41,23 +41,30 @@ app.group('/books', (app) =>
 );
 
 app.group('/members', (app) =>
-  app.get('', ({ set }) => {
-    const allMembers = getAllMembers();
-    set.status = 200;
-
-    return allMembers;
-  })
-    .post('', ({ body, set }) => {
-      const member = body as Member;
-      set.status = 201;
-
-      createMember(member);
-    }, memberValidation)
-    .get('/:memberId', (context) => {
-      context.set.status = 200;
-
-      return getMemberById(Number.parseInt(context.params.memberId));
-    },)
+    app.get('', ({ set }) => {
+        const allMembers = getAllMembers();
+        set.status = 200;
+        return allMembers;
+    })
+        .post('', ({ body, set }) => {
+            const newMember = body as Member;
+            const successful = createMember(newMember);
+            if (!successful) {
+                set.status = 400;
+                return { message: 'Member creation failed' };
+            }
+            set.status = 201;
+            return { message: 'Member created successfully!' };
+        }, memberValidation)
+        .get('/:memberid', ({ set, params: { memberid } }) => {
+            const member = findMemberById(memberid);
+            if (!member) {
+                set.status = 404;
+                return { message: 'Member not found' };
+            }
+            set.status = 201;
+            return member;
+        }, memberIdParamValidation)
 );
 
 const hostname: string | undefined = app.server?.hostname;

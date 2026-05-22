@@ -1,18 +1,19 @@
 import type { Member } from "../models/models";
-import { insertMember, getAll, getById } from "../repository/repository";
+import { create, findById, getAll } from "../repository/repository";
 
 export function getAllMembers(): Member[] {
     return getAll();
 }
 
-export function getMemberById(memberId: number): Member | null {
-    return getById(memberId);
+export function createMember(member: Member): boolean {
+    try {
+        create(member);
+        return true;
+    } catch {
+        return false;
+    }
 }
 
-
-export function createMember(member: Member): Member | undefined {
-    insertMember(member.name, member.email, member.phone, member.address);
-    
-    return;
+export function findMemberById(memberId: number): Member | null {
+    return findById(memberId);
 }
-
