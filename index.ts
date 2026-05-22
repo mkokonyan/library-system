@@ -8,6 +8,9 @@ import type { Member } from "./src/member/models/models";
 import { memberIdParamValidation, memberValidation } from "./src/member/models/validation";
 import { initMemberTable } from "./src/member/repository/init";
 import { initBookIssueTable } from "./src/book-issue/repository/init";
+import { issueRequestValidation } from "./src/book-issue/models/validation";
+import type { IssueRequest } from "./src/book-issue/models/models";
+import { saveIssue } from "./src/book-issue/service/service";
 
 initTables();
 
@@ -68,13 +71,23 @@ app.group('/members', (app) =>
         }, memberIdParamValidation)
 );
 
+app.post('/issues', ({ body, set }) => {
+    const issue = body as IssueRequest;
+    const issueResponse = saveIssue(issue);
+    set.status = 201;
+    if (!issueResponse.success) {
+        set.status = 400;
+    }
+    return issueResponse;
+}, issueRequestValidation)
+
 const hostname: string | undefined = app.server?.hostname;
 const serverPort: number | undefined = app.server?.port;
 
 console.log(`Server running at ${hostname}:${serverPort}`);
 
 function initTables(): void {
-  initBookTable();
-  initMemberTable();
-  initBookIssueTable();
+    initBookTable();
+    initMemberTable();
+    initBookIssueTable();
 }
