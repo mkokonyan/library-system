@@ -6,6 +6,7 @@ import type { Book } from "./src/book/models/models";
 import { createMember, getAllMembers, getMemberById } from "./src/member/service/service";
 import type { Member } from "./src/member/models/models";
 import { memberValidation } from "./src/member/models/validation";
+import { initMemberTable } from "./src/member/repository/init";
 
 initTables();
 
