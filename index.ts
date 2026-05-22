@@ -3,13 +3,14 @@ import { initBookTable } from './src/book/repository/init';
 import { createBook, findBookById, getAllBooks } from "./src/book/service/service";
 import { bookIdParamValidation, bookValidation } from "./src/book/models/validation";
 import type { Book } from "./src/book/models/models";
-import "./src/member/repository/init";
+import { createMember, getAllMembers, getMemberById } from "./src/member/service/service";
+import type { Member } from "./src/member/models/models";
+import { memberValidation } from "./src/member/models/validation";
 
 initTables();
 
-const port: number = 3000;
+const port: number = 3001;
 const app: Elysia = new Elysia().listen(port);
-
 
 app.group('/books', (app) =>
     app.get('', ({ set }) => {
@@ -38,6 +39,25 @@ app.group('/books', (app) =>
         }, bookIdParamValidation)
 );
 
+app.group('/members', (app) =>
+  app.get('', ({ set }) => {
+    const allMembers = getAllMembers();
+    set.status = 200;
+
+    return allMembers;
+  })
+    .post('', ({ body, set }) => {
+      const member = body as Member;
+      set.status = 201;
+
+      createMember(member);
+    }, memberValidation)
+    .get('/:memberId', (context) => {
+      context.set.status = 200;
+
+      return getMemberById(Number.parseInt(context.params.memberId));
+    },)
+);
 
 const hostname: string | undefined = app.server?.hostname;
 const serverPort: number | undefined = app.server?.port;
@@ -45,5 +65,6 @@ const serverPort: number | undefined = app.server?.port;
 console.log(`Server running at ${hostname}:${serverPort}`);
 
 function initTables(): void {
-    initBookTable();
+  initBookTable();
+  initMemberTable();
 }
