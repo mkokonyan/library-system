@@ -1,4 +1,7 @@
+import { Database } from "bun:sqlite";
 import { Elysia } from "elysia";
+
+export const db = new Database("library.db");
 
 const port: number = 3000;
 const app: Elysia = new Elysia().listen(port);
