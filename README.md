@@ -32,8 +32,8 @@ bun index.ts
 curl --location 'http://localhost:3001/members' \
 --header 'Content-Type: application/json' \
 --data-raw '{
-    "name": "migration_forward_e_commerce.rss",
-    "email": "Candice_Brakus@hotmail.com",
+    "name": "Martin Kokonyan",
+    "email": "mkk@hotmail.com",
     "phone": "995-852-2962",
     "address": "8149 Leannon Trafficway"
 }'
@@ -48,7 +48,7 @@ curl --location 'http://localhost:3001/members'
 **3. Get member by ID**
 
 ```bash
-curl --location 'http://localhost:3001/members/2'
+curl --location 'http://localhost:3001/members/1'
 ```
 
 ### Books
@@ -61,7 +61,7 @@ curl --location 'http://localhost:3001/members/2'
 curl --location 'http://localhost:3001/books' \
 --header 'Content-Type: application/json' \
 --data '{
-    "title": "District Tactics Strategist",
+    "title": "District Tactics",
     "subject": "McCullough and Sons",
     "author": "Kevin Spinka",
     "language": "English"
@@ -89,7 +89,7 @@ curl --location 'http://localhost:3001/issues' \
 --header 'Content-Type: application/json' \
 --data '{
     "memberId": 1,
-    "bookId": 3
+    "bookId": 1
 }'
 ```
 
@@ -115,5 +115,3 @@ curl --location --request DELETE 'http://localhost:3001/issues/1'
 
 - Data is stored in `library.db` in the project root (listed in `.gitignore`).
 - To reset the database: stop the server, delete `library.db`, and start again with `bun index.ts`.
-- A book can only have one active issue at a time (`bookId` is unique in `book_issues`).
-- `issueId` and `issueDate` are assigned automatically when creating an issue.
