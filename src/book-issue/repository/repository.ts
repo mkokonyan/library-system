@@ -38,14 +38,14 @@ export function getCountByBookId(bookId: number): number | null {
     const stmt = db.prepare<BookIssue, number>(
         "SELECT * FROM book_issues WHERE bookId = ?",
     );
-    return stmt.get(bookId)?.length;
+    return stmt.all(bookId)?.length;
 }
 
 export function getCountByMemberId(memberId: number): number | null {
     const stmt = db.prepare<BookIssue, number>(
         "SELECT * FROM book_issues WHERE memberId = ?",
     );
-    return stmt.get(memberId)?.length;
+    return stmt.all(memberId)?.length;
 }
 
 export function insertIssue(memberId: number, bookId: number, issueDate: string): void {
