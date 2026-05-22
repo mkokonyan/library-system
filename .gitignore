@@ -16,11 +16,6 @@ out/
 .env
 .env.*
 
-# SQLite databases
-*.db
-*.sqlite
-*.sqlite3
-
 # Logs
 logs/
 *.log
