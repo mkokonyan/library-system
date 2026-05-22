@@ -4,21 +4,21 @@ import type { Member } from "./member.model";
 
 export function selectAllMembers(): Member[] {
   const stmt = db.prepare<Member, []>(
-    "select * from members",
+    "SELECT * FROM members",
   );
   return stmt.all();
 }
 
 export function selectMemberById(memberId: number): Member {
   const stmt = db.prepare<Member, number>(
-    "select * from members where memverId=?",
+    "SELECT * FROM members WHERE memberId=?",
   );
-  return stmt.all(memberId);
+  return stmt.get(memberId);
 }
 
 export function insertMember(name: string, email: string, phone: string, address: string): Member {
   const stmt = db.prepare<Member, [string]>(
-    "insert into members(name,email,phone,addres) values(?,?,?,?)",
+    "INSERT INTO members(name,email,phone,address) values(?,?,?,?)",
   );
 
   return stmt.run(name, email, phone, address);
