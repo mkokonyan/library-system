@@ -7,6 +7,7 @@ import { createMember, findMemberById, getAllMembers } from "./src/member/servic
 import type { Member } from "./src/member/models/models";
 import { memberIdParamValidation, memberValidation } from "./src/member/models/validation";
 import { initMemberTable } from "./src/member/repository/init";
+import { initBookIssueTable } from "./src/book-issue/repository/init";
 
 initTables();
 
@@ -75,4 +76,5 @@ console.log(`Server running at ${hostname}:${serverPort}`);
 function initTables(): void {
   initBookTable();
   initMemberTable();
+  initBookIssueTable();
 }
