@@ -1,6 +1,7 @@
 import { db } from "../../db";
 
-db.run(`
+export function initMemberTable(): void {
+  db.run(`
   CREATE TABLE IF NOT EXISTS members (
     memberId INTEGER PRIMARY KEY AUTOINCREMENT,
     name CHAR(100) NOT NULL
@@ -13,3 +14,4 @@ db.run(`
       CHECK (length(trim(address)) >= 5)
   )
 `);
+}
