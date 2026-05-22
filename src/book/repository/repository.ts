@@ -1,5 +1,5 @@
+import { db } from "../../db";
 import type { Book } from "../models/models";
-import { db } from "../../../index";
 
 export function getAll(): Book[] {
     return db.prepare<Book, []>(

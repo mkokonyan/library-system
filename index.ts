@@ -1,11 +1,9 @@
-import { Database } from "bun:sqlite";
 import { Elysia } from "elysia";
 import { initBookTable } from './src/book/repository/init';
 import { createBook, getAllBooks } from "./src/book/service/service";
 import { bookValidation } from "./src/book/models/validation";
 import type { Book } from "./src/book/models/models";
-
-export const db = new Database("library.db");
+import "./src/member/repository/init";
 
 initTables();
 
