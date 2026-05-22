@@ -14,7 +14,7 @@ export function createBook(book: Book): boolean {
     }
 }
 
-export function findBookById(bookid: number): Book | null {
-    return findById(bookid);
+export function findBookById(bookId: number): Book | null {
+    return findById(bookId);
 }
 

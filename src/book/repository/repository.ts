@@ -17,11 +17,11 @@ export function create(book: Book): void {
     stmt.run(title, subject, author, language);
 }
 
-export function findById(bookid: number): Book | null {
+export function findById(bookId: number): Book | null {
     const stmt = db.prepare<Book, number>(
-        "SELECT * FROM books WHERE bookid = ?",
+        "SELECT * FROM books WHERE bookId = ?",
     );
-    return stmt.get(bookid);
+    return stmt.get(bookId);
 }
 
 

@@ -12,6 +12,6 @@ export const bookValidation = {
 
 export const bookIdParamValidation = {
     params: t.Object({
-        bookid: t.Number()
+        bookId: t.Number()
     })
 };

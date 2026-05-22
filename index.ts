@@ -27,8 +27,8 @@ app.group('/books', (app) =>
             set.status = 201;
             return { message: 'Book created successfully!' };
         }, bookValidation)
-        .get('/:bookid', ({ set, params: { bookid } }) => {
-            const book = findBookById(bookid);
+        .get('/:bookId', ({ set, params: { bookId } }) => {
+            const book = findBookById(bookId);
             if (!book) {
                 set.status = 404;
                 return { message: 'Book not found' };
