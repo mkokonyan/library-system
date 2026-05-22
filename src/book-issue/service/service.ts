@@ -1,7 +1,27 @@
+import type { BookIssueDetails, IssueErrorResponse, IssueRequest, IssueResponse } from "../models/models";
+import { deleteById, getActiveByMemberId, getAllWithDetails, getByBookIdAndMemberId, getCountByBookId, getCountByMemberId, insertIssue } from "../repository/repository";
+import { findById as findMemberById } from "../../member/repository/repository";
 import { findBookById } from "../../book/service/service";
-import { findMemberById } from "../../member/service/service";
-import type { BookIssue, IssueErrorResponse, IssueRequest, IssueResponse } from "../models/models";
-import { getByBookIdAndMemberId, getCountByBookId, getCountByMemberId, insertIssue } from "../repository/repository";
+
+export function getAllIssues(): BookIssueDetails[] {
+    return getAllWithDetails();
+}
+
+export function getMemberActiveIssues(memberId: number): BookIssueDetails[] | null {
+    if (!findMemberById(memberId)) {
+        return null;
+    }
+
+    return getActiveByMemberId(memberId);
+}
+
+export function returnIssue(issueId: number): boolean {
+    try {
+        return deleteById(issueId);
+    } catch {
+        return false;
+    }
+}
 
 export function saveIssue({ memberId, bookId }: IssueRequest): IssueResponse | IssueErrorResponse {
     const member = findMemberById(memberId);

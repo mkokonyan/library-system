@@ -8,6 +8,8 @@ import type { Member } from "./src/member/models/models";
 import { memberIdParamValidation, memberValidation } from "./src/member/models/validation";
 import { initMemberTable } from "./src/member/repository/init";
 import { initBookIssueTable } from "./src/book-issue/repository/init";
+import { getAllIssues, getMemberActiveIssues, returnIssue } from "./src/book-issue/service/service";
+import { issueIdParamValidation } from "./src/book-issue/models/validation";
 import { issueRequestValidation } from "./src/book-issue/models/validation";
 import type { IssueRequest } from "./src/book-issue/models/models";
 import { saveIssue } from "./src/book-issue/service/service";
@@ -60,8 +62,8 @@ app.group('/members', (app) =>
             set.status = 201;
             return { message: 'Member created successfully!' };
         }, memberValidation)
-        .get('/:memberid', ({ set, params: { memberid } }) => {
-            const member = findMemberById(memberid);
+        .get('/:memberId', ({ set, params: { memberId } }) => {
+            const member = findMemberById(memberId);
             if (!member) {
                 set.status = 404;
                 return { message: 'Member not found' };
@@ -69,6 +71,43 @@ app.group('/members', (app) =>
             set.status = 201;
             return member;
         }, memberIdParamValidation)
+        .get('/:memberId/issues', ({ set, params: { memberId } }) => {
+            const issues = getMemberActiveIssues(memberId);
+            if (issues === null) {
+                set.status = 404;
+                return { message: 'Member not found' };
+            }
+            set.status = 200;
+            return issues;
+        }, memberIdParamValidation)
+);
+
+app.group('/issues', (app) =>
+    app.get('', ({ set }) => {
+        const issues = getAllIssues();
+        set.status = 200;
+        return issues;
+    })
+        .delete('/:issueId', ({ set, params: { issueId } }) => {
+            const successful = returnIssue(issueId);
+            if (!successful) {
+                set.status = 404;
+                return { message: 'Issue not found' };
+            }
+            set.status = 200;
+            return { message: 'Book returned successfully' };
+        }, issueIdParamValidation)
+
+        .post('', ({ body, set }) => {
+            const issue = body as IssueRequest;
+            const issueResponse = saveIssue(issue);
+            set.status = 201;
+            if (!issueResponse.success) {
+                set.status = 400;
+            }
+            return issueResponse;
+        }, issueRequestValidation)
+
 );
 
 app.post('/issues', ({ body, set }) => {

@@ -11,6 +11,6 @@ export const memberValidation = {
 
 export const memberIdParamValidation = {
     params: t.Object({
-        memberid: t.Numeric(),
+        memberId: t.Numeric(),
     }),
 };
